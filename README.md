@@ -1,2 +1,2 @@
-# kinoite
+# My custom kinoite image build
 
