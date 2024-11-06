@@ -18,3 +18,5 @@ RUN rpm-ostree install virt-manager vim neovim bat btop butane coreos-installer 
 RUN rpm-ostree cleanup --repomd
 
 RUN systemctl enable libvirtd
+
+RUN ostree container commit
