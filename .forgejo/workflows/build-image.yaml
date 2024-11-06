@@ -6,5 +6,5 @@ jobs:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      - run:  podman build . --no-cache --squash -t docker://${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
+      - run:  podman build . --no-cache --pull newer --squash -t docker://${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
       - run:  podman image prune -f
