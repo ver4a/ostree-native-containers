@@ -16,3 +16,5 @@ RUN rpm-ostree install virt-manager
 # Remove rpm metadata cache
 
 RUN rpm-ostree cleanup --repomd
+
+RUN systemctl enable libvirtd
