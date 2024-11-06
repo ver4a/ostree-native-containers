@@ -1,4 +1,4 @@
-FROM quay.io/fedora-ostree-desktops/kinoite:40
+FROM quay.io/fedora-ostree-desktops/kinoite:41
 
 # Remove firefox
 RUN rpm-ostree override remove firefox firefox-langpacks
