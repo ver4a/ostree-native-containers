@@ -11,7 +11,7 @@ RUN rpm-ostree override remove libavcodec-free libavfilter-free libpostproc-free
 
 # Bulk of layered packages
 
-RUN rpm-ostree install virt-manager
+RUN rpm-ostree install virt-manager vim neovim bat btop butane coreos-installer dnf5 gnome-disk-utility nmap pv restic uv zstd
 
 # Remove rpm metadata cache
 
