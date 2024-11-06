@@ -8,4 +8,5 @@ jobs:
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       - run:  podman build . --no-cache --pull=newer --squash-all -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
       - run:  podman push ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
-      - run:  podman image prune -f
+      - if: '!cancelled()'
+        run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40 && podman image prune -f
