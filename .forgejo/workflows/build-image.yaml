@@ -7,6 +7,6 @@ jobs:
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       - run:  podman build . --no-cache --pull=always --squash-all -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
-      - run:  podman push --compression-format=zstd:chunked --compression-level=20 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
+      - run:  podman push --compression-format=zstd:chunked --compression-level=1 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40
       - if: '!cancelled()'
         run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:40 && podman image prune -f
