@@ -17,4 +17,5 @@ RUN rpm-ostree cleanup --repomd
 
 RUN systemctl enable libvirtd
 
+# https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
