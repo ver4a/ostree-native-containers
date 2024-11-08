@@ -10,7 +10,7 @@ RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-
 RUN rpm-ostree override remove libavcodec-free libavfilter-free libpostproc-free libswresample-free libswscale-free libavutil-free libavformat-free ffmpeg-free libavdevice-free --install=ffmpeg
 
 # Bulk of layered packages
-RUN rpm-ostree install virt-manager vim neovim bat btop butane coreos-installer dnf5 gnome-disk-utility nmap pv restic uv zstd
+RUN rpm-ostree install virt-manager vim neovim bat btop butane coreos-installer nmap pv restic zstd
 
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
