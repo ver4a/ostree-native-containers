@@ -17,6 +17,9 @@ RUN systemctl enable libvirtd
 # Set vim as default editor
 RUN rpm-ostree override remove nano-default-editor --install vim-default-editor
 
+# Remove default color prompt (is replaced with a custom one)
+RUN rpm-ostree override remove bash-color-prompt
+
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
 
