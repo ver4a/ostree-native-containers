@@ -12,10 +12,13 @@ RUN rpm-ostree override remove libavcodec-free libavfilter-free libpostproc-free
 # Bulk of layered packages
 RUN rpm-ostree install virt-manager vim neovim bat btop butane coreos-installer nmap pv restic zstd
 
+RUN systemctl enable libvirtd
+
+# Set vim as default editor
+RUN rpm-ostree override remove nano-default-editor --install vim-default-editor
+
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
-
-RUN systemctl enable libvirtd
 
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
