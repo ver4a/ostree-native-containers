@@ -22,7 +22,7 @@ RUN rpm-ostree override remove bash-color-prompt
 
 # Install nvidia drivers
 RUN rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia-cuda && \
-    akmods --force
+    akmods --force --kernels $(rpm -qa kernel | sed 's/kernel-//g')
 
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
