@@ -21,7 +21,8 @@ RUN rpm-ostree override remove nano-default-editor --install vim-default-editor
 RUN rpm-ostree override remove bash-color-prompt
 
 # Install nvidia drivers
-RUN rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia-cuda
+RUN rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia-cuda && \
+    akmods --force
 
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
