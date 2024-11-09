@@ -1,6 +1,6 @@
 on: [push]
 jobs:
-  build-images:
+  build-kde:
     runs-on: shell
     steps:
       - uses: actions/checkout@v4
@@ -8,7 +8,15 @@ jobs:
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       - run:  podman build . -f Dockerfile.kde --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde
-      - run: podman build . -f Dockerfile.kde-nvidia --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia
-      - run: podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia
       - if: '!cancelled()'
-        run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia && podman image prune -f
+        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde && podman image prune -f
+  build-kde-nvidia:
+    runs-on: shell
+    steps:
+      - uses: actions/checkout@v4
+      - run:  cd ${{ env.GITHUB_WORKSPACE }}
+      - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
+      - run:  podman build . -f Dockerfile.kde-nvidia --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia
+      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia
+      - if: '!cancelled()'
+        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia && podman image prune -f
