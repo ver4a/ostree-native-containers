@@ -1,6 +1,6 @@
 on: [push]
 jobs:
-  build-image:
+  build-images:
     runs-on: shell
     steps:
       - uses: actions/checkout@v4
@@ -8,5 +8,7 @@ jobs:
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       - run:  podman build . -f Dockerfile.kde --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41
       - run:  podman push --compression-format=zstd:chunked --compression-level=1 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41
+      - run: podman build . -f Dockerfile.kde-nvidia --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41-nvidia
+      - run: podman push --compression-format=zstd:chunked --compression-level=1 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41-nvidia
       - if: '!cancelled()'
         run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41 && podman image prune -f
