@@ -11,4 +11,4 @@ jobs:
       - run: podman build . -f Dockerfile.kde-nvidia --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia
       - run: podman push --compression-format=zstd:chunked --compression-level=1 ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia
       - if: '!cancelled()'
-        run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia:41 && podman image prune -f
+        run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde ${{ vars.REGISTRY_DOMAIN }}/ver4a/aureolin:41-kde-nvidia && podman image prune -f
