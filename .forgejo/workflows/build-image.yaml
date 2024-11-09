@@ -6,7 +6,7 @@ jobs:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      - run:  podman build . --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41
+      - run:  podman build . -f Dockerfile.kde --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41
       - run:  podman push --compression-format=zstd:chunked --compression-level=1 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41 ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41
       - if: '!cancelled()'
         run: podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.MAIN_IMAGE }}:41 && podman image prune -f
