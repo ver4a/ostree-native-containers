@@ -1,8 +1,5 @@
 FROM quay.io/fedora-ostree-desktops/kinoite:41
 
-# Apply configuration
-COPY etc /etc
-
 # Remove firefox
 RUN rpm-ostree override remove firefox firefox-langpacks
 
@@ -25,6 +22,9 @@ RUN rpm-ostree override remove bash-color-prompt
 
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
+
+# Apply configuration
+COPY etc /etc
 
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
