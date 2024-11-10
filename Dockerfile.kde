@@ -10,7 +10,7 @@ RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-
 RUN rpm-ostree override remove libavcodec-free libavfilter-free libpostproc-free libswresample-free libswscale-free libavutil-free libavformat-free ffmpeg-free libavdevice-free --install=ffmpeg
 
 # Bulk of layered packages
-RUN rpm-ostree install virt-manager vim neovim bat btop pv restic zstd
+RUN rpm-ostree install virt-manager vim neovim bat btop pv restic zstd nmap-ncat
 
 RUN systemctl enable libvirtd
 
