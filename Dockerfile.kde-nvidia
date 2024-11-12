@@ -9,6 +9,9 @@ RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-
 # Install ffmpeg (removing all the -free replacements is required)
 RUN rpm-ostree override remove libavcodec-free libavfilter-free libpostproc-free libswresample-free libswscale-free libavutil-free libavformat-free ffmpeg-free libavdevice-free --install=ffmpeg
 
+# Install openh264
+RUN rpm-ostree override remove noopenh264 --install openh264 --install mozilla-openh264
+
 # Bulk of layered packages
 RUN rpm-ostree install virt-manager vim neovim bat btop pv restic zstd nmap-ncat
 
