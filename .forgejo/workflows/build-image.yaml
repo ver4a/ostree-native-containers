@@ -6,37 +6,37 @@ jobs:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      - run:  podman build . -f Dockerfile.kde -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable
-      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable
+      - run:  podman build . -f Dockerfile.kde -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
+      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       - if: '!cancelled()'
-        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable && podman image prune -f
+        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main && podman image prune -f
   build-kde-nvidia:
     runs-on: shell
     steps:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      - run:  podman build . -f Dockerfile.kde-nvidia -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable-nvidia
-      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable-nvidia
+      - run:  podman build . -f Dockerfile.kde-nvidia -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
+      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
       - if: '!cancelled()'
-        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:stable-nvidia && podman image prune -f
+        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia && podman image prune -f
   build-gnome:
     runs-on: shell
     steps:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      - run:  podman build . -f Dockerfile.gnome -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable
-      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable
+      - run:  podman build . -f Dockerfile.gnome -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
+      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       - if: '!cancelled()'
-        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable && podman image prune -f
+        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main && podman image prune -f
   build-gnome-nvidia:
     runs-on: shell
     steps:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      - run:  podman build . -f Dockerfile.gnome-nvidia -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable-nvidia
-      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable-nvidia
+      - run:  podman build . -f Dockerfile.gnome-nvidia -m 2G --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia
+      - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia
       - if: '!cancelled()'
-        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:stable-nvidia && podman image prune -f
+        run:  podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia && podman image prune -f
