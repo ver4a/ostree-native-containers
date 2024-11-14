@@ -1,8 +1,10 @@
 FROM git.uncontrol.me/ver4a/onc-kde:main
 
 # Install nvidia drivers
-RUN rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia-cuda && \
-    akmods --force --kernels $(rpm -qa kernel | sed 's/kernel-//g')
+RUN rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda && \
+    akmods --force --kernels $(rpm -qa kernel | sed 's/kernel-//g') && \
+    rpm -e akmod-nvidia && \
+    dnf5 -y autoremove
 
 # Remove rpm metadata cache
 RUN rpm-ostree cleanup --repomd
