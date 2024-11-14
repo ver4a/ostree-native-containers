@@ -6,8 +6,5 @@ RUN dnf5 -y install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda &&
     rpm -e akmod-nvidia && \
     dnf5 -y autoremove
 
-# Remove rpm metadata cache
-RUN dnf5 clean all
-
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
