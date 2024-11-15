@@ -1,0 +1,2 @@
+au BufRead,BufNewFile *.container set filetype=systemd
+au BufRead,BufNewFile *.container.disabled set filetype=systemd
