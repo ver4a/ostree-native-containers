@@ -1,0 +1,22 @@
+FROM git.uncontrol.me/ver4a/onc-kde:main-nvidia
+
+# Install virtualization tools
+RUN dnf5 -y install libvirt virt-manager
+
+# Install FCOS related packages
+RUN dnf5 -y install butane coreos-installer
+
+# Install python development packages
+RUN dnf5 -y install uv
+
+# Install general purpose development tools
+RUN dnf5 -y install codium neovim
+
+# Remove KDE Connect
+RUN rpm -e kde-connect kde-connect-libs kdeconnectd
+
+# Remove Firefox rpm (superseded by flatpak Firefox)
+RUN rpm -e firefox firefox-langpacks
+
+# Remove unneeded packages (currently doesn't actually reduce space, but reduces clutter)
+RUN dnf5 -y autoremove
