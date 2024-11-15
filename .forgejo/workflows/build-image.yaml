@@ -16,7 +16,7 @@ jobs:
       - run:  podman build . -f Dockerfile.kde-nvidia --no-cache --pull=never --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
       # base + nvidia + ver4a's configuration
-      - run:  podman build . -f Dockerfile.kde-nvidia --no-cache --pull=never --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a
+      - run:  podman build . -f Dockerfile.kde-nvidia-ver4a --no-cache --pull=never --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a
       - if: '!cancelled()'
         run: >
