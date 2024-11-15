@@ -15,7 +15,7 @@ RUN dnf5 -y install --allowerasing ffmpeg
 RUN dnf5 -y swap noopenh264 openh264 && dnf5 -y install mozilla-openh264
 
 # Bulk of layered packages
-RUN dnf5 -y install virt-manager libvirt vim neovim bat btop pv restic zstd nmap-ncat
+RUN dnf5 -y install virt-manager libvirt vim bat btop pv restic zstd nmap-ncat
 
 # Set vim as default editor
 RUN dnf5 -y swap nano-default-editor vim-default-editor
