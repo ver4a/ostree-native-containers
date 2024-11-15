@@ -26,5 +26,9 @@ RUN dnf5 -y remove bash-color-prompt
 # Apply configuration
 COPY etc /etc
 
+# Apply hardened firewall configuration
+RUN firewall-offline-cmd --set-default-zone public
+RUN firewall-offline-cmd --remove-service ssh
+
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
