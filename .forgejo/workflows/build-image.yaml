@@ -9,14 +9,16 @@ jobs:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
+      # Prepare dnf5 metadata cache (fedora repos, rpmfusion will come later)
+      - run:  podman run --replace --rm --pull=always --name kde-dnf-makecache -v ./cache:/var/cache/libdnf5:z registry.fedoraproject.org/fedora-minimal:41 dnf5 makecache
       # base
-      - run:  podman build . -f Dockerfile.kde --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
+      - run:  podman build . -f Dockerfile.kde --no-cache --pull=always -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       # base + nvidia
-      - run:  podman build . -f Dockerfile.kde-nvidia --no-cache --pull=never --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
+      - run:  podman build . -f Dockerfile.kde-nvidia --no-cache --pull=never -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia
       # base + nvidia + ver4a's configuration
-      - run:  podman build . -f Dockerfile.kde-nvidia-ver4a --no-cache --pull=never --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a
+      - run:  podman build . -f Dockerfile.kde-nvidia-ver4a --no-cache --pull=never -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-nvidia-ver4a
       - if: '!cancelled()'
         run: >
@@ -29,11 +31,13 @@ jobs:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
+      # Prepare dnf5 metadata cache (fedora repos, rpmfusion will come later)$
+      - run:  podman run --replace --rm --pull=always --name gnome-dnf-makecache -v ./cache:/var/cache/libdnf5:z registry.fedoraproject.org/fedora-minimal:41 dnf5 makecache
       # base
-      - run:  podman build . -f Dockerfile.gnome --no-cache --pull=always --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
+      - run:  podman build . -f Dockerfile.gnome --no-cache --pull=always -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       # base + nvidia
-      - run:  podman build . -f Dockerfile.gnome-nvidia --no-cache --pull=never --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia
+      - run:  podman build . -f Dockerfile.gnome-nvidia --no-cache --pull=never -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main-nvidia
       - if: '!cancelled()'
         run: >
