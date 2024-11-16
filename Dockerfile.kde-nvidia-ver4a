@@ -15,6 +15,9 @@ RUN dnf5 -y install codium neovim
 # Remove KDE Connect
 RUN rpm -e kde-connect kde-connect-libs kdeconnectd
 
+# Remove discover update notifier
+RUN rpm -e plasma-discover-notifier
+
 # Remove Firefox rpm (superseded by flatpak Firefox)
 RUN rpm -e firefox firefox-langpacks
 
