@@ -10,6 +10,7 @@ jobs:
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       # base
+      - run:  mkdir cache
       - run:  podman build . -f Dockerfile.kde --no-cache --pull=always -v ${PWD}/cache:/var/cache/libdnf5:z --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       # base + nvidia
@@ -30,6 +31,7 @@ jobs:
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       # base
+      - run:  mkdir cache
       - run:  podman build . -f Dockerfile.gnome --no-cache --pull=always -v ${PWD}/cache:/var/cache/libdnf5:z --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       - run:  podman push --compression-format=zstd:chunked --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       # base + nvidia
