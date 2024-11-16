@@ -10,6 +10,7 @@ jobs:
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       # Prepare dnf5 metadata cache (fedora repos, rpmfusion will come later)
+      - run:  mkdir cache
       - run:  podman run --replace --rm --pull=always --name kde-dnf-makecache -v ./cache:/var/cache/libdnf5:z registry.fedoraproject.org/fedora-minimal:41 dnf5 makecache
       # base
       - run:  podman build . -f Dockerfile.kde --no-cache --pull=always -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
@@ -32,6 +33,7 @@ jobs:
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
       # Prepare dnf5 metadata cache (fedora repos, rpmfusion will come later)$
+      - run:  mkdir cache
       - run:  podman run --replace --rm --pull=always --name gnome-dnf-makecache -v ./cache:/var/cache/libdnf5:z registry.fedoraproject.org/fedora-minimal:41 dnf5 makecache
       # base
       - run:  podman build . -f Dockerfile.gnome --no-cache --pull=always -v ./cache:/var/cache/libdnf5:O --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
