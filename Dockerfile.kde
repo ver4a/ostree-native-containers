@@ -22,6 +22,7 @@ RUN dnf5 -y remove bash-color-prompt
 
 # Apply configuration
 COPY etc /etc
+COPY usr /usr
 
 # Apply hardened firewall configuration
 RUN firewall-offline-cmd --set-default-zone public
