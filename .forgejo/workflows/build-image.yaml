@@ -12,8 +12,7 @@ jobs:
       # base
       - run:  mkdir cache
         # Waits for all "podman pull"s to exit before starting a pull
-      - run:  while [[ $(pgrep -f '^podman pull') ]]; do sleep 2; done
-      - run:  podman pull quay.io/fedora-ostree-desktops/kinoite:41
+      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/kinoite:41'
       - run:  podman build . -f Dockerfile.kde --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       # base + nvidia
@@ -36,8 +35,7 @@ jobs:
       # base
       - run:  mkdir cache
         # Waits for all "podman pull"s to exit before starting a pull
-      - run:  while [[ $(pgrep -f '^podman pull') ]]; do sleep 2; done
-      - run:  podman pull quay.io/fedora-ostree-desktops/silverblue:41
+      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/silverblue:41'
       - run:  podman build . -f Dockerfile.gnome --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-gnome:main
       # base + nvidia
