@@ -1,7 +1,7 @@
 FROM git.uncontrol.me/ver4a/onc-kde:main-nvidia
 
 # Install virtualization tools
-RUN dnf5 -y install libvirt-daemon-kvm virt-manager
+RUN dnf5 -y install libvirt libvirt-daemon-kvm virt-manager
 
 # Install FCOS related packages
 RUN dnf5 -y install butane coreos-installer
