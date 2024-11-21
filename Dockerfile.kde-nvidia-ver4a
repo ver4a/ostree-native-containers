@@ -10,7 +10,7 @@ RUN dnf5 -y install butane coreos-installer
 RUN dnf5 -y install uv
 
 # Install general purpose development tools
-RUN dnf5 -y install codium neovim
+RUN dnf5 -y install codium neovim ansible
 
 # Remove KDE Connect
 RUN rpm -e kde-connect kde-connect-libs kdeconnectd
