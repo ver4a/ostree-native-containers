@@ -9,6 +9,9 @@ RUN dnf5 -y install butane coreos-installer
 # Install python development packages
 RUN dnf5 -y install uv
 
+# Install general utilities
+RUN dnf5 -y install croc
+
 # Install general purpose development tools
 RUN dnf5 -y install codium neovim ansible python3-ansible-lint
 
