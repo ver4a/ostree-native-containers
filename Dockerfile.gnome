@@ -1,4 +1,17 @@
+FROM quay.io/fedora-ostree-desktops/silverblue:41 AS mpv-build
+
+RUN dnf5 -y install --setopt install_weak_deps=false git meson g++ autoconf cmake automake libtool freetype-devel fribidi-devel nasm pipewire-devel wayland-devel wayland-protocols-devel libshaderc-devel libxkbcommon-devel vulkan-loader-devel compat-lua-devel
+
+RUN mkdir /build && cd /build && git clone https://github.com/mpv-player/mpv-build.git
+
+COPY ./mpv_options /build/mpv-build/mpv_options
+
+RUN cd /build/mpv-build && ./rebuild -j$(nproc)
+
+
 FROM quay.io/fedora-ostree-desktops/silverblue:41
+
+COPY --from=mpv-build /build/mpv-build/mpv/build/mpv /bin/mpv
 
 # dnf configuration has to be in effect during build
 COPY etc/dnf /etc/dnf

@@ -1,0 +1,4 @@
+-Dpipewire=enabled
+-Dwayland=enabled
+-Dlua=enabled
+-Dvulkan=enabled
