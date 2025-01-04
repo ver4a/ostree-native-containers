@@ -2,3 +2,4 @@
 -Dwayland=enabled
 -Dlua=enabled
 -Dvulkan=enabled
+-Dvaapi=enabled
