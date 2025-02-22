@@ -13,7 +13,7 @@ RUN dnf5 -y install uv
 RUN dnf5 -y install croc solaar openrgb
 
 # Install general purpose development tools
-RUN dnf5 -y install codium neovim ansible python3-ansible-lint
+RUN dnf5 -y install codium neovim wl-clipboard ansible python3-ansible-lint
 
 # Remove KDE Connect
 RUN rpm -e kde-connect kde-connect-libs kdeconnectd
