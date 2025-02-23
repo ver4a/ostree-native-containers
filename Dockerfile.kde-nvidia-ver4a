@@ -10,10 +10,10 @@ RUN dnf5 -y install croc solaar openrgb
 RUN dnf5 -y install codium neovim wl-clipboard ansible python3-ansible-lint uv butane coreos-installer
 
 # Remove unwanted packages
-RUN rpm -e kde-connect kde-connect-libs kdeconnectd plasma-discover-notifier
+RUN dnf5 -y remove kde-connect kde-connect-libs kdeconnectd plasma-discover-notifier
 
 # Remove Firefox rpm (superseded by flatpak Firefox)
-RUN rpm -e firefox firefox-langpacks
+RUN dnf5 -y remove firefox firefox-langpacks
 
 # Remove unneeded packages (currently doesn't actually reduce space, but reduces clutter)
 RUN dnf5 -y autoremove
