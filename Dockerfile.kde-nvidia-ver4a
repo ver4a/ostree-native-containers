@@ -18,5 +18,5 @@ RUN dnf5 -y remove firefox firefox-langpacks
 # Remove unneeded packages (currently doesn't actually reduce space, but reduces clutter)
 RUN dnf5 -y autoremove
 
-# https://github.com/ostreedev/ostree-rs-ext/issues/159$
+# https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
