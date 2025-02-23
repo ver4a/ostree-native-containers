@@ -3,4 +3,4 @@
 -Dlua=enabled
 -Dvulkan=enabled
 -Dvaapi=enabled
--Dlibmpv=disabled
+-Dlibmpv=false
