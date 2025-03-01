@@ -15,6 +15,7 @@ jobs:
       - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/kinoite:41'
       - run:  podman build . -f Dockerfile.kde --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main
+      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main)
       # base + ver4a's configuration
       - run:  podman build . -f Dockerfile.kde-ver4a --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash -t ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-ver4a
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-ver4a ${{ vars.REGISTRY_DOMAIN }}/ver4a/onc-kde:main-ver4a
