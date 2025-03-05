@@ -1,4 +1,6 @@
-FROM git.uncontrol.me/ver4a/onc-kde:main
+ARG NAMESPACE
+
+FROM git.uncontrol.me/${NAMESPACE}/onc-kde:main
 
 # Install nvidia drivers
 RUN dnf5 -y install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda && \
