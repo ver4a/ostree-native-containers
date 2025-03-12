@@ -22,7 +22,7 @@ RUN dnf5 -y autoremove
 
 # Remove setuid/setgid binaries
 # Except for polkit-agent-helper-1, it's currently required for interactive authentication with polkit.
-RUN find /usr -mindepth 1 -type f -perm /6000 -regextype posix-extended -not -regex '/usr/lib/polkit-1/polkit-agent-helper-1' -exec sh -c 'chmod ug-s '{}' && echo "Removed setuid/setgid bit(s) from {}"' \;
+RUN find /usr -mindepth 1 -type f -perm /6000 -regextype posix-extended -not -regex '/usr/lib/polkit-1/polkit-agent-helper-1|/usr/sbin/unix_chkpwd' -exec sh -c 'chmod ug-s '{}' && echo "Removed setuid/setgid bit(s) from {}"' \;
 
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
