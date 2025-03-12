@@ -11,5 +11,8 @@ RUN dnf5 -y install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda &&
 # Apply configuration
 COPY usr.nvidia /usr
 
+# Enables nvidia persistenced, required for programs that don't/can't activate the nvidia driver (steam flatpak)
+RUN systemctl enable nvidia-persistenced.service
+
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
