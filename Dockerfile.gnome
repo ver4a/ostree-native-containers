@@ -13,6 +13,9 @@ FROM quay.io/fedora-ostree-desktops/silverblue:41
 
 COPY --from=mpv-build /build/mpv-build/mpv/build/mpv /bin/mpv
 
+# Temporary workaround for https://github.com/rpm-software-management/dnf5/issues/2134
+RUN dnf5 -y downgrade dnf5-5.2.10.0
+
 # dnf configuration has to be in effect during build
 COPY etc/dnf /etc/dnf
 
