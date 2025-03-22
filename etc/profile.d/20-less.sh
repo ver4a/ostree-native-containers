@@ -1,1 +1,1 @@
-LESS=FRSMK
+export LESS=FRSMK
