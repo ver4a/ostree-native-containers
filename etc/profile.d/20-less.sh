@@ -1,1 +1,1 @@
-export LESS=FRSMK
+export LESS=RSMK
