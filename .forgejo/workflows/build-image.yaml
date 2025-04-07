@@ -4,7 +4,7 @@ on:
     - cron: '0 5 * * *'
 jobs:
   build-kde:
-    runs-on: shell
+    runs-on: oci-builder
     steps:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
@@ -35,7 +35,7 @@ jobs:
           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia && podman image prune -f &&
           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a && podman image prune -f
   build-gnome:
-    runs-on: shell
+    runs-on: oci-builder
     steps:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
