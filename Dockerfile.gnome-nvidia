@@ -1,6 +1,8 @@
+ARG REGISTRY_DOMAIN
+
 ARG NAMESPACE
 
-FROM git.uncontrol.me/${NAMESPACE}/onc-gnome:main
+FROM ${REGISTRY_DOMAIN}/${NAMESPACE}/onc-gnome:main
 
 # Install nvidia drivers
 RUN dnf5 -y install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda && \
