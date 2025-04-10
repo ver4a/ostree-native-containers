@@ -18,3 +18,5 @@ RUN systemctl enable nvidia-persistenced.service
 
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
+
+LABEL quay.expires-after=""

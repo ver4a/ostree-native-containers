@@ -28,3 +28,5 @@ RUN find /usr -mindepth 1 -type f -perm /6000 -regextype posix-extended -not -re
 
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
+
+LABEL quay.expires-after=""

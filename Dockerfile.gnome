@@ -53,3 +53,5 @@ RUN chmod 700 /etc/containers/systemd
 
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
+
+LABEL quay.expires-after=""
