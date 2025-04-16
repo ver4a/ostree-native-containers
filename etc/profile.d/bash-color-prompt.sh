@@ -61,8 +61,7 @@ if [ -n "${BASH_VERSION}" -a -z "${bash_prompt_color_disable}" ]; then
     }
 
     # only activate for color terminals and if PS1 unchanged from bash or fedora defaults
-    if [ '(' "$PS1" = "[\u@\h \W]\\$ " -o "$PS1" = "\\s-\\v\\\$ " ')' \
-             -a '(' "${TERM: -5}" = "color" -o "${TERM}" = "linux" ')' \
+    if [ '(' "${TERM: -5}" = "color" -o "${TERM}" = "linux" ')' \
              -o -n "${bash_prompt_color_force}" ]; then
         prompt_color "$PROMPT_COLOR"
         prompt_default_highlight "$PROMPT_HIGHLIGHT"
