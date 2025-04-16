@@ -12,7 +12,7 @@ jobs:
       # base
       - run:  mkdir cache
         # Waits for a CI pull lock to be released before starting a new pull
-      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/kinoite:41'
+      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/kinoite:42'
       - run:  podman build . -f Dockerfile.kde --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main --annotation quay.expires-after=
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
       - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main --label quay.expires-after=4w --annotation quay.expires-after=4w
@@ -47,7 +47,7 @@ jobs:
       # base
       - run:  mkdir cache
         # Waits for a CI pull lock to be released before starting a new pull
-      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/silverblue:41'
+      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/silverblue:42'
       - run:  podman build . -f Dockerfile.gnome --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main --annotation quay.expires-after=
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main
       - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main --label quay.expires-after=4w --annotation quay.expires-after=4w
