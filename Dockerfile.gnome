@@ -1,6 +1,6 @@
 FROM quay.io/fedora-ostree-desktops/silverblue:42 AS mpv-build
 
-RUN dnf5 -y install --setopt install_weak_deps=false git meson g++ autoconf cmake automake libtool freetype-devel fribidi-devel nasm pipewire-devel wayland-devel wayland-protocols-devel libshaderc-devel libxkbcommon-devel vulkan-loader-devel compat-lua-devel libva-devel openssl-devel
+RUN dnf5 -y install --setopt install_weak_deps=false git-core meson g++ autoconf cmake automake libtool freetype-devel fribidi-devel nasm pipewire-devel wayland-devel wayland-protocols-devel libshaderc-devel libxkbcommon-devel vulkan-loader-devel compat-lua-devel libva-devel openssl-devel
 
 RUN mkdir /build && cd /build && git clone https://github.com/mpv-player/mpv-build.git
 
