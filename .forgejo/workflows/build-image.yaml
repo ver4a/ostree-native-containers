@@ -38,26 +38,26 @@ jobs:
           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-ver4a && podman image prune -f &&
           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia && podman image prune -f &&
           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a && podman image prune -f
-  build-gnome:
-    runs-on: oci-builder
-    steps:
-      - uses: actions/checkout@v4
-      - run:  cd ${{ env.GITHUB_WORKSPACE }}
-      - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
-      # base
-      - run:  mkdir cache
-        # Waits for a CI pull lock to be released before starting a new pull
-      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/silverblue:42'
-      - run:  podman build . -f Dockerfile.gnome --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main --annotation quay.expires-after=
-      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main
-      - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main --label quay.expires-after=4w --annotation quay.expires-after=4w
-      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main)
-      # base + nvidia
-      - run:  podman build . -f Dockerfile.gnome-nvidia --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia --annotation quay.expires-after=
-      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia
-      - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia --label quay.expires-after=4w --annotation quay.expires-after=4w
-      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main)-nvidia
-      - if: '!cancelled()'
-        run: >
-           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main && podman image prune -f &&
-           podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia && podman image prune -f
+#   build-gnome:
+#     runs-on: oci-builder
+#     steps:
+#       - uses: actions/checkout@v4
+#       - run:  cd ${{ env.GITHUB_WORKSPACE }}
+#       - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
+#       # base
+#       - run:  mkdir cache
+#         # Waits for a CI pull lock to be released before starting a new pull
+#       - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/silverblue:42'
+#       - run:  podman build . -f Dockerfile.gnome --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main --annotation quay.expires-after=
+#       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main
+#       - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main --label quay.expires-after=4w --annotation quay.expires-after=4w
+#       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main)
+#       # base + nvidia
+#       - run:  podman build . -f Dockerfile.gnome-nvidia --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia --annotation quay.expires-after=
+#       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia
+#       - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia --label quay.expires-after=4w --annotation quay.expires-after=4w
+#       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main)-nvidia
+#       - if: '!cancelled()'
+#         run: >
+#            podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main && podman image prune -f &&
+#            podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-gnome:main-nvidia && podman image prune -f
