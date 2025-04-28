@@ -40,7 +40,7 @@ jobs:
           buildah bud
           -f <(echo FROM scratch)
           --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
-          -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
+          -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main.expiring
           --label quay.expires-after=4w
           --annotation quay.expires-after=4w
 
@@ -49,7 +49,7 @@ jobs:
           buildah push
           --compression-format=zstd
           --compression-level=${{ vars.COMPRESSION_LEVEL }}
-          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
+          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main.expiring
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main)
 
       # base + ver4a's configuration
