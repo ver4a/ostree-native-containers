@@ -21,6 +21,7 @@ jobs:
         run: >
           buildah bud
           -f Dockerfile.kde
+          -t {{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
           --userns=container
           --security-opt=no-new-privileges
           --annotation=quay.expires-after=
