@@ -51,7 +51,7 @@ jobs:
           --annotation quay.expires-after=4w
 
       - name: 'Push dated (expiring) image - onc-kde:main'
-      - run: >
+        run: >
           podman push
           --compression-format=zstd
           --compression-level=${{ vars.COMPRESSION_LEVEL }}
