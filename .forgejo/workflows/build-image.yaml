@@ -14,7 +14,6 @@ jobs:
           registry: ${{ vars.REGISTRY_DOMAIN }}
           username: ${{ vars.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          auth_file_path: '$HOME/.config/containers/auth.json'
       # base
       - run:  mkdir cache
       - name: 'Build image - onc-kde:main'
