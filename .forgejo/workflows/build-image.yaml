@@ -16,30 +16,24 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       # base
       - run:  mkdir cache
+
       - name: 'Build image - onc-kde:main'
-        uses: 'https://git.uncontrol.me/ver4a-actions/buildah-build@v2-compat'
-        with:
-          tags: '${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main'
-          containerfiles: 'Dockerfile.kde'
-          oci: true
-          extra-args: |
-            --userns=container
-            --security-opt=no-new-privileges
-            --annotation=quay.expires-after=
-            -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
-          build-args: |
-            REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
-            NAMESPACE=${{ vars.NAMESPACE }}
+        run: >
+          buildah bud
+          -f Dockerfile.kde
+          --userns=container
+          --security-opt=no-new-privileges
+          --annotation=quay.expires-after=
+          -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
+          --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
+          --build-arg NAMESPACE=${{ vars.NAMESPACE }}
 
       - name: 'Push image - onc-kde:main'
-        uses: 'actions/push-to-registry@v2'
-        with:
-          image: '${{ vars.NAMESPACE }}/onc-kde'
-          tags: 'main'
-          registry: '${{ vars.REGISTRY_DOMAIN }}'
-          extra-args: |
-            --compression-format=zstd
-            --compression-level=${{ vars.COMPRESSION_LEVEL }}
+        run: >
+          buildah push
+          --compression-format=zstd
+          --compression-level=${{ vars.COMPRESSION_LEVEL }}
+          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
 
       - name: 'Make expiring image - onc-kde:main'
         run: >
