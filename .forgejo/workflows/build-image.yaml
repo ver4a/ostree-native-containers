@@ -42,20 +42,20 @@ jobs:
             --compression-level=${{ vars.COMPRESSION_LEVEL }}
 
       - name: 'Make expiring image - onc-kde:main'
-        run: |
-          podman build \
-          -f <(echo FROM scratch) \
-          --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main \
-          -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main \
-          --label quay.expires-after=4w \
+        run: >
+          podman build
+          -f <(echo FROM scratch)
+          --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
+          -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
+          --label quay.expires-after=4w
           --annotation quay.expires-after=4w
 
       - name: 'Push dated (expiring) image - onc-kde:main'
-      - run: |
-          podman push \
-          --compression-format=zstd \
-          --compression-level=${{ vars.COMPRESSION_LEVEL }} \
-          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main \
+      - run: >
+          podman push
+          --compression-format=zstd
+          --compression-level=${{ vars.COMPRESSION_LEVEL }}
+          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main)
 
       # base + ver4a's configuration
