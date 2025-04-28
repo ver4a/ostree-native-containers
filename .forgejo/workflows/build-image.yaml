@@ -17,7 +17,7 @@ jobs:
           auth_file_path: '$HOME/.config/containers/auth.json'
       # base
       - run:  mkdir cache
-      - name: 'Build image'
+      - name: 'Build image - onc-kde:main'
         uses: 'https://git.uncontrol.me/ver4a-actions/buildah-build@v2-compat'
         with:
           tags: '${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main'
