@@ -27,7 +27,7 @@ jobs:
             --userns=container
             --security-opt=no-new-privileges
             --annotation=quay.expires-after=
-            -v ${PWD}/cache:/var/cache/libdnf5:Z
+            -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
           build-args: |
             REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
             NAMESPACE=${{ vars.NAMESPACE }}
