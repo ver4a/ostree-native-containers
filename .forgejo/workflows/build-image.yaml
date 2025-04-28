@@ -8,12 +8,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run:  cd ${{ env.GITHUB_WORKSPACE }}
-      - run:  podman login -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ vars.REGISTRY_DOMAIN }}
+      - name: 'Log in to registry'
+        uses: 'actions/podman-login@v1'
+        with:
+          registry: ${{ vars.REGISTRY_DOMAIN }}
+          username: ${{ vars.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          auth_file_path: '$HOME/.config/containers/auth.json'
       # base
       - run:  mkdir cache
-        # Waits for a CI pull lock to be released before starting a new pull
-      - run:  flock -x /tmp/CI-podman-pull-lock -c 'podman pull quay.io/fedora-ostree-desktops/kinoite:42'
-      - run:  podman build . -f Dockerfile.kde --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main --annotation quay.expires-after=
+      - name: 'Build image'
+        uses: 'https://git.uncontrol.me/ver4a-actions/buildah-build@v2-compat'
+        with:
+          tags: '${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main'
+          containerfiles: 'Dockerfile.kde'
+          oci: true
+          extra-args: |
+            --userns=container
+            --security-opt=no-new-privileges
+            --annotation=quay.expires-after=
+            -v ${PWD}/cache:/var/cache/libdnf5:Z
+          build-args: |
+            REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
+            NAMESPACE=${{ vars.NAMESPACE }}
+#      - run:  podman build . -f Dockerfile.kde --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main --annotation quay.expires-after=
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main
       - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main --label quay.expires-after=4w --annotation quay.expires-after=4w
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main)
