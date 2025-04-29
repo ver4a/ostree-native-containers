@@ -205,12 +205,8 @@ jobs:
           --compression-level=${{ vars.COMPRESSION_LEVEL }}
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a.expiring
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .OCIv1.Config.Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a)-nvidia-ver4a
-      - if: '!cancelled()'
-        run: >
-          podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main && podman image prune -f &&
-          podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-ver4a && podman image prune -f &&
-          podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia && podman image prune -f &&
-          podman image rm -f ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a && podman image prune -f
+
+
 #   build-gnome:
 #     runs-on: oci-builder
 #     steps:
