@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: cd ${{ env.GITHUB_WORKSPACE }}
+      - run: cd ${{ env.GITHUB_WORKSPACE }}/containers
 
       - name: 'Log in to registry'
         run: >
@@ -64,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: cd ${{ env.GITHUB_WORKSPACE }}
+      - run: cd ${{ env.GITHUB_WORKSPACE }}/containers
 
       - name: 'Log in to registry'
         run: >
@@ -116,7 +116,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: cd ${{ env.GITHUB_WORKSPACE }}
+      - run: cd ${{ env.GITHUB_WORKSPACE }}/containers
 
       - name: 'Log in to registry'
         run: >
@@ -167,7 +167,7 @@ jobs:
     needs: 'build-kde-nvidia'
     steps:
       - uses: actions/checkout@v4
-      - run: cd ${{ env.GITHUB_WORKSPACE }}
+      - run: cd ${{ env.GITHUB_WORKSPACE }}/containers
       - name: 'Log in to registry'
         run: >
           buildah login
