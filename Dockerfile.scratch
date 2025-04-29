@@ -1,2 +1,0 @@
-# This servres as a placeholder for the "-f" parameter to "podman build" e.g. if we set "--from" and "--label" to relabel an image.
-FROM scratch
