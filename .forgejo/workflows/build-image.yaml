@@ -91,10 +91,41 @@ jobs:
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .OCIv1.Config.Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-ver4a)-ver4a
 
       # base + nvidia
-      - run:  podman build . -f Dockerfile.kde-nvidia --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia --annotation quay.expires-after=
-      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia
-      - run:  podman build -f Dockerfile.scratch --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia --label quay.expires-after=4w --annotation quay.expires-after=4w
-      - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(podman image inspect -f '{{ index .Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia)-nvidia
+      - name: 'Build image - onc-kde:main-nvidia'
+        run: >
+          buildah bud
+          -f Dockerfile.kde-nvidia
+          -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia
+          --userns=container
+          --security-opt=no-new-privileges
+          --annotation=quay.expires-after=
+          -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
+          --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
+          --build-arg NAMESPACE=${{ vars.NAMESPACE }}
+
+      - name: 'Push image - onc-kde:main-nvidia'
+        run: >
+          buildah push
+          --compression-format=zstd
+          --compression-level=${{ vars.COMPRESSION_LEVEL }}
+          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia
+
+      - name: 'Make expiring image - onc-kde:main-nvidia'
+        run: >
+          buildah bud
+          -f <(echo FROM scratch)
+          --from ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia
+          -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia.expiring
+          --label quay.expires-after=4w
+          --annotation quay.expires-after=4w
+
+      - name: 'Push dated (expiring) image - onc-kde:main-nvidia'
+        run: >
+          buildah push
+          --compression-format=zstd
+          --compression-level=${{ vars.COMPRESSION_LEVEL }}
+          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia.expiring
+          ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .OCIv1.Config.Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia)-nvidia
       # base + nvidia + ver4a's configuration
       - run:  podman build . -f Dockerfile.kde-nvidia-ver4a --userns container --security-opt no-new-privileges --no-cache --pull=never -v ${PWD}/cache:/var/cache/libdnf5:Z --squash --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }} --build-arg NAMESPACE=${{ vars.NAMESPACE }} -t ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a --annotation quay.expires-after=
       - run:  podman push --compression-format=zstd --compression-level=${{ vars.COMPRESSION_LEVEL }} ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia-ver4a
