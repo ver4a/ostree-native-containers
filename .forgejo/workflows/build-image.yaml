@@ -171,6 +171,7 @@ jobs:
           -u ${{ vars.REGISTRY_USERNAME }}
           -p ${{ secrets.REGISTRY_PASSWORD }}
           ${{ vars.REGISTRY_DOMAIN }}
+
       - name: 'Build image - onc-kde:main-nvidia-ver4a'
         run: >
           buildah bud
