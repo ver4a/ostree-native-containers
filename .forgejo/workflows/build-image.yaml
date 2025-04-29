@@ -15,8 +15,6 @@ jobs:
           -p ${{ secrets.REGISTRY_PASSWORD }}
           ${{ vars.REGISTRY_DOMAIN }}
       # base
-      - run:  mkdir cache
-
       - name: 'Build image - onc-kde:main'
         run: >
           buildah bud
@@ -25,7 +23,6 @@ jobs:
           --userns=container
           --security-opt=no-new-privileges
           --annotation=quay.expires-after=
-          -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
           --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
           --build-arg NAMESPACE=${{ vars.NAMESPACE }}
 
@@ -62,7 +59,6 @@ jobs:
           --userns=container
           --security-opt=no-new-privileges
           --annotation=quay.expires-after=
-          -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
           --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
           --build-arg NAMESPACE=${{ vars.NAMESPACE }}
 
@@ -99,7 +95,6 @@ jobs:
           --userns=container
           --security-opt=no-new-privileges
           --annotation=quay.expires-after=
-          -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
           --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
           --build-arg NAMESPACE=${{ vars.NAMESPACE }}
 
@@ -135,7 +130,6 @@ jobs:
           --userns=container
           --security-opt=no-new-privileges
           --annotation=quay.expires-after=
-          -v ${{ env.GITHUB_WORKSPACE }}/cache:/var/cache/libdnf5:Z
           --build-arg REGISTRY_DOMAIN=${{ vars.REGISTRY_DOMAIN }}
           --build-arg NAMESPACE=${{ vars.NAMESPACE }}
 
