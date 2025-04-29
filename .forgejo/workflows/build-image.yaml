@@ -4,17 +4,20 @@ on:
     - cron: '0 5 * * *'
 jobs:
   build-kde:
+    name: 'Build onc-kde:main'
     runs-on: oci-builder
     steps:
       - uses: actions/checkout@v4
-      - run:  cd ${{ env.GITHUB_WORKSPACE }}
+
+      - run: cd ${{ env.GITHUB_WORKSPACE }}
+
       - name: 'Log in to registry'
         run: >
           buildah login
           -u ${{ vars.REGISTRY_USERNAME }}
           -p ${{ secrets.REGISTRY_PASSWORD }}
           ${{ vars.REGISTRY_DOMAIN }}
-      # base
+
       - name: 'Build image - onc-kde:main'
         run: >
           buildah bud
@@ -50,7 +53,23 @@ jobs:
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main.expiring
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .OCIv1.Config.Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main)
 
-      # base + ver4a's configuration
+
+  build-kde-ver4a:
+    name: 'Build onc-kde:main-ver4a'
+    runs-on: oci-builder
+    needs: 'build-kde'
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: cd ${{ env.GITHUB_WORKSPACE }}
+
+      - name: 'Log in to registry'
+        run: >
+          buildah login
+          -u ${{ vars.REGISTRY_USERNAME }}
+          -p ${{ secrets.REGISTRY_PASSWORD }}
+          ${{ vars.REGISTRY_DOMAIN }}
+
       - name: 'Build image - onc-kde:main-ver4a'
         run: >
           buildah bud
@@ -86,7 +105,23 @@ jobs:
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-ver4a.expiring
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .OCIv1.Config.Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-ver4a)-ver4a
 
-      # base + nvidia
+
+  build-kde-nvidia:
+    name: 'Build onc-kde:main-nvidia'
+    runs-on: oci-builder
+    needs: 'build-kde'
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: cd ${{ env.GITHUB_WORKSPACE }}
+
+      - name: 'Log in to registry'
+        run: >
+          buildah login
+          -u ${{ vars.REGISTRY_USERNAME }}
+          -p ${{ secrets.REGISTRY_PASSWORD }}
+          ${{ vars.REGISTRY_DOMAIN }}
+
       - name: 'Build image - onc-kde:main-nvidia'
         run: >
           buildah bud
@@ -121,7 +156,21 @@ jobs:
           --compression-level=${{ vars.COMPRESSION_LEVEL }}
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia.expiring
           ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:$(buildah inspect -t image -f '{{ index .OCIv1.Config.Labels "org.opencontainers.image.version" }}' ${{ vars.REGISTRY_DOMAIN }}/${{ vars.NAMESPACE }}/onc-kde:main-nvidia)-nvidia
-      # base + nvidia + ver4a's configuration
+
+
+  build-kde-nvidia-ver4a:
+    name: 'Build onc-kde:main-nvidia-ver4a'
+    runs-on: oci-builder
+    needs: 'build-kde-nvidia'
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd ${{ env.GITHUB_WORKSPACE }}
+      - name: 'Log in to registry'
+        run: >
+          buildah login
+          -u ${{ vars.REGISTRY_USERNAME }}
+          -p ${{ secrets.REGISTRY_PASSWORD }}
+          ${{ vars.REGISTRY_DOMAIN }}
       - name: 'Build image - onc-kde:main-nvidia-ver4a'
         run: >
           buildah bud
