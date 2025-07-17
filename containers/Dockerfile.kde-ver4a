@@ -5,7 +5,7 @@ ARG NAMESPACE
 FROM ${REGISTRY_DOMAIN}/${NAMESPACE}/onc-kde:main
 
 # Install virtualization tools
-RUN dnf5 -y install libvirt libvirt-daemon-kvm virt-manager
+RUN dnf5 -y install libvirt libvirt-daemon-kvm virt-manager openvswitch NetworkManager-ovs
 
 # Install general utilities
 RUN dnf5 -y install croc solaar openrgb
