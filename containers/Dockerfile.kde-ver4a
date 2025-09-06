@@ -11,7 +11,7 @@ RUN dnf5 -y install libvirt libvirt-daemon-kvm virt-manager openvswitch NetworkM
 RUN dnf5 -y install croc solaar openrgb
 
 # Install general purpose development tools
-RUN dnf5 -y install codium neovim wl-clipboard ansible python3-ansible-lint uv butane coreos-installer java-21-openjdk
+RUN dnf5 -y install codium neovim wl-clipboard ansible python3-ansible-lint uv butane coreos-installer java-21-openjdk-devel
 
 # Remove unwanted packages
 RUN dnf5 -y remove kde-connect plasma-discover plasma-discover-libs
