@@ -8,7 +8,7 @@ FROM ${REGISTRY_DOMAIN}/${NAMESPACE}/onc-kde:main-nvidia
 RUN dnf5 -y install libvirt libvirt-daemon-kvm virt-manager openvswitch NetworkManager-ovs
 
 # Install general utilities
-RUN dnf5 -y install croc solaar openrgb
+RUN dnf5 -y install croc solaar openrgb wireguard-tools
 
 # Install general purpose development tools
 RUN dnf5 -y install codium neovim wl-clipboard ansible python3-ansible-lint uv butane coreos-installer java-21-openjdk-devel
