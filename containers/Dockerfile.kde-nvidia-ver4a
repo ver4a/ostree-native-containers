@@ -26,6 +26,11 @@ RUN dnf5 -y autoremove
 # Except for polkit-agent-helper-1, it's currently required for interactive authentication with polkit.
 RUN find /usr -mindepth 1 -type f -perm /6000 -regextype posix-extended -not -regex '^/usr/lib/polkit-1/polkit-agent-helper-1$|^/usr/s?bin/unix_chkpwd$|^/usr/s?bin/fusermount[0-9]?$' -exec sh -c "chmod ug-s '{}' && echo \"Removed setuid/setgid bit(s) from '{}'\"" \;
 
+COPY ./selinux-policies /tmp/selinux-policies
+RUN checkmodule -M -m -o /tmp/selinux-policies/ver4a-selinux.mod /tmp/selinux-policies/ver4a-selinux.te
+RUN semodule_package -m /tmp/selinux-policies/ver4a-selinux.mod -o /tmp/selinux-policies/ver4a-selinux.pp
+RUN semodule -i /tmp/selinux-policies/ver4a-selinux.pp
+
 # https://github.com/ostreedev/ostree-rs-ext/issues/159
 RUN ostree container commit
 
