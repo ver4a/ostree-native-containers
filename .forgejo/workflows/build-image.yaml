@@ -4,7 +4,7 @@ on:
       - 'containers/**'
       - '.forgejo/workflows/build-image.yaml'
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 6 * * 0'
 jobs:
   build-kde:
     name: 'Build onc-kde:main'
