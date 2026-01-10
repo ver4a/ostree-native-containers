@@ -40,6 +40,9 @@ RUN dnf5 -y swap nano-default-editor vim-default-editor
 # Remove default color prompt (is replaced with a custom one)
 RUN dnf5 -y remove bash-color-prompt
 
+# Load the ntsync kernel module on boot
+RUN dnf5 -y install ntsync-autoload
+
 # Apply configuration
 COPY etc /etc
 COPY usr /usr
