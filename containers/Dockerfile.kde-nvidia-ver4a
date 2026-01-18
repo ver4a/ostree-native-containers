@@ -14,7 +14,7 @@ RUN dnf5 -y install croc solaar openrgb wireguard-tools
 RUN dnf5 -y install codium neovim wl-clipboard ansible python3-ansible-lint uv butane coreos-installer java-21-openjdk-devel
 
 # Remove unwanted packages
-RUN dnf5 -y remove kde-connect plasma-discover plasma-discover-libs
+RUN dnf5 -y remove kde-connect
 
 # Remove Firefox rpm (superseded by flatpak Firefox)
 RUN dnf5 -y remove firefox firefox-langpacks
