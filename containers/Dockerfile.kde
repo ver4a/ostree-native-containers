@@ -9,9 +9,22 @@ COPY ./mpv_options /build/mpv-build/mpv_options
 RUN cd /build/mpv-build && ./rebuild -j$(nproc)
 
 
+FROM quay.io/fedora-ostree-desktops/kinoite:43 AS scx-build
+
+RUN dnf5 -y install --setopt install_weak_deps=false cargo git-core elfutils-libelf-devel clang rust-libseccomp-devel
+
+RUN mkdir /build && cd /build && git clone https://github.com/sched-ext/scx
+
+RUN cargo build --release -p scx_lavd
+
+
 FROM quay.io/fedora-ostree-desktops/kinoite:43
 
 COPY --from=mpv-build /build/mpv-build/mpv/build/mpv /bin/mpv
+
+COPY --from=scx-build /build/scx/target/release/scx_lavd /usr/bin/scx_lavd
+
+COPY --from=scx-build /build/scx/services/scx.service /usr/lib/systemd/system/scx.service
 
 # dnf configuration has to be in effect during build
 COPY etc/dnf /etc/dnf
