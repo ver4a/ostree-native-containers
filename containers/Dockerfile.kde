@@ -31,9 +31,6 @@ COPY --from=scx-build /build/scx/services/scx.service /usr/lib/systemd/system/sc
 # dnf configuration has to be in effect during build
 COPY etc/dnf /etc/dnf
 
-# fix-up kconfig path
-RUN sed -i "/SCX_FLAGS=/ s/$/ --kconfig \/usr\/lib\/modules\/$(uname -r)\/config/" /etc/default/scx
-
 # Add rpmfusion repositories
 RUN dnf5 -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
@@ -64,6 +61,9 @@ RUN dnf5 -y install ntsync-autoload
 # Apply configuration
 COPY etc /etc
 COPY usr /usr
+
+# fix-up kconfig path
+RUN sed -i "/SCX_FLAGS=/ s/$/ --kconfig \/usr\/lib\/modules\/$(uname -r)\/config/" /etc/default/scx
 
 # Apply hardened firewall configuration
 RUN firewall-offline-cmd --set-default-zone public
