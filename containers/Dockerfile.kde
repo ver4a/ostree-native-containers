@@ -19,12 +19,16 @@ RUN mkdir -m 700 /var/roothome
 
 RUN cd /build/scx && cargo build --release -p scx_lavd
 
+RUN cd /build/scx && cargo build --release -p scx_bpfland
+
 
 FROM quay.io/fedora-ostree-desktops/kinoite:43
 
 COPY --from=mpv-build /build/mpv-build/mpv/build/mpv /bin/mpv
 
 COPY --from=scx-build /build/scx/target/release/scx_lavd /usr/bin/scx_lavd
+
+COPY --from=scx-build /build/scx/target/release/scx_bpfland /usr/bin/
 
 COPY --from=scx-build /build/scx/services/scx.service /usr/lib/systemd/system/scx.service
 
