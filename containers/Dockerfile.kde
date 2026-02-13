@@ -35,48 +35,13 @@ COPY --from=scx-build /build/scx/services/scx.service /usr/lib/systemd/system/sc
 # dnf configuration has to be in effect during build
 COPY etc/dnf /etc/dnf
 
-# Add rpmfusion repositories
-RUN dnf5 -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-# Install ffmpeg (removing all the -free replacements is required)
-RUN dnf5 -y install --allowerasing ffmpeg
-
-# Install hardware codecs
-RUN dnf5 -y install intel-media-driver
-
-# Install gpu utilities
-RUN dnf5 -y install igt-gpu-tools
-
-# Install openh264
-RUN dnf5 -y swap noopenh264 openh264 && dnf5 -y install mozilla-openh264
-
-# Bulk of layered packages
-RUN dnf5 -y install vim bat btop pv restic zstd nmap-ncat yt-dlp
-
-# Set vim as default editor
-RUN dnf5 -y swap nano-default-editor vim-default-editor
-
-# Remove default color prompt (is replaced with a custom one)
-RUN dnf5 -y remove bash-color-prompt
-
-# Load the ntsync kernel module on boot
-RUN dnf5 -y install ntsync-autoload
-
 # Apply configuration
 COPY etc /etc
 COPY usr /usr
 
-# fix-up kconfig path
-RUN sed -i "/SCX_FLAGS=/ s/$/ --kconfig \/usr\/lib\/modules\/$(rpm -qa kernel | sed 's/kernel-//g')\/config/" /etc/default/scx
-
-# Apply hardened firewall configuration
-RUN firewall-offline-cmd --set-default-zone public
-RUN firewall-offline-cmd --remove-service ssh
-
-# Restrict permissions on quadlet directory
-RUN chmod 700 /etc/containers/systemd
-
-# https://github.com/ostreedev/ostree-rs-ext/issues/159
-RUN ostree container commit
+# Run build logic
+COPY build-scripts/kde.bash /tmp/kde.bash
+RUN chmod +x /tmp/kde.bash
+RUN /tmp/kde.bash
 
 LABEL quay.expires-after=""
