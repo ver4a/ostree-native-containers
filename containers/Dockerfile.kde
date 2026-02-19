@@ -35,13 +35,13 @@ COPY --from=scx-build /build/scx/services/scx.service /usr/lib/systemd/system/sc
 # dnf configuration has to be in effect during build
 COPY etc/dnf /etc/dnf
 
-# Apply configuration
-COPY etc /etc
-COPY usr /usr
-
 # Run build logic
 COPY build-scripts/kde.bash /tmp/kde.bash
 RUN chmod +x /tmp/kde.bash
 RUN /tmp/kde.bash
+
+# Apply configuration
+COPY etc /etc
+COPY usr /usr
 
 LABEL quay.expires-after=""
