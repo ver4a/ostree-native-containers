@@ -18,9 +18,6 @@ PKGS_NTSYNC="ntsync-autoload"
 # Add packages
 dnf5 -y install --allowerasing ${PKGS_CODECS} ${PKGS_UTILS} ${PKGS_GENERAL} ${PKGS_DEFAULT_EDITOR} ${PKGS_NTSYNC}
 
-# Remove default color prompt (is replaced with a custom one)
-dnf5 -y remove bash-color-prompt
-
 # Apply configuration
 # fix-up kconfig path
 sed -i "/SCX_FLAGS=/ s/$/ --kconfig \/usr\/lib\/modules\/$(rpm -qa kernel | sed 's/kernel-//g')\/config/" /etc/default/scx
