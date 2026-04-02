@@ -5,7 +5,7 @@ ARG NAMESPACE
 FROM ${REGISTRY_DOMAIN}/${NAMESPACE}/onc-kde:main
 
 # Install nvidia drivers
-RUN dnf5 -y install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda && \
+RUN dnf5 -y install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-cuda || true && \
     akmods --force --kernels $(rpm -qa kernel | sed 's/kernel-//g') && \
     rpm -e akmod-nvidia && \
     dnf5 -y autoremove
