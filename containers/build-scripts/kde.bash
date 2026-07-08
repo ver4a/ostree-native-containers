@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 set -euo pipefail
 
+# Make /opt part of image. This change was made to allow installing brave-browser (which installs into /opt/brave.com) as per https://ostreedev.github.io/ostree/var/#examples
+rm /opt && mkdir /opt
+
 # Add rpmfusion repositories
 dnf5 -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
