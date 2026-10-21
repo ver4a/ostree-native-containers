@@ -5,7 +5,7 @@ set -euo pipefail
 rm /opt && mkdir /opt
 
 # fast-track fix for https://bugzilla.redhat.com/show_bug.cgi?id=2556376
-dnf5 -y upgrade --enable-repo updates-testing ca-certificates-2026.2.92_v9.0.3
+dnf5 -y upgrade --enable-repo updates-testing ca-certificates-2026.2.92_v9.0.319
 
 # Add rpmfusion repositories
 dnf5 -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
